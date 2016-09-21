@@ -61,6 +61,7 @@ Add a peer to the graph. The `peer` object should contain:
   me: true, // is this the current user?
   name: 'display name' // name to show in the graph UI
 }
+```
 
 ### graph.connect(id1, id2)
 
