@@ -13,7 +13,8 @@
   "dependencies": {
     "d3": "^3.5.6",
     "debounce": "^1.0.0",
-    "debug": "^2.2.0"
+    "debug": "^2.2.0",
+    "prettier-bytes": "^1.0.3"
   },
   "devDependencies": {
     "standard": "*",
@@ -36,6 +37,7 @@
     "url": "git://github.com/feross/p2p-graph.git"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "bundle": "browserify index.js --standalone p2p-graph > bundle.js"
   }
 }
