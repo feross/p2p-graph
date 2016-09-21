@@ -3,11 +3,17 @@ module.exports = TorrentGraph
 var d3 = require('d3')
 var debug = require('debug')('p2p-graph')
 var debounce = require('debounce')
+var prettierBytes = require('prettier-bytes');
 
 var COLORS = {
-  links: '#FAFAFA',
+  links: {
+    color: '#C8C8C8',
+    width: 0.7, // default link thickness
+    maxWidth: 5.0, // max thickness
+    maxBytes: 2097152 // link max thickness at 2MB
+  },
   text: {
-    subtitle: '#FAFAFA'
+    subtitle: '#C8C8C8'
   },
   nodes: {
     method: function (d, i) {
@@ -35,6 +41,14 @@ function TorrentGraph (root) {
       ? 1
       : Math.max(0.2, 1 - ((len - 10) / 100))
   }
+
+  function speedRange(bytes){
+    var speed = prettierBytes(bytes).split(' ');
+    var value = speed[0];  // ex. 259.0
+    var unit = speed[1];   // ex. KB (not yet used)
+    bytes = bytes >= COLORS.links.maxBytes ? COLORS.links.maxBytes : bytes;
+		return { width: bytes * COLORS.links.maxWidth / COLORS.links.maxBytes, unit: unit};
+	}
 
   var width = root.offsetWidth
   var height = (window.innerWidth >= 900) ? 400 : 250
@@ -86,11 +100,24 @@ function TorrentGraph (root) {
     link.enter()
       .insert('line', '.node')
         .attr('class', 'link')
-        .style('stroke', COLORS.links)
+        .style('stroke', COLORS.links.color)
         .style('opacity', 0.5)
 
     link.exit()
       .remove()
+
+    link.style('stroke-width', function(d){
+        // setting thickness
+        return d.rate ?
+                d.rate.width < COLORS.links.width ?
+                  COLORS.links.width
+                  : d.rate.width
+               : COLORS.links.width;
+    })
+
+    link.style('opacity', function(d){
+      debug()
+    });
 
     var g = node.enter()
       .append('g')
@@ -168,7 +195,7 @@ function TorrentGraph (root) {
 
     g.append('text')
       .attr('class', 'text')
-      .text(function (d) { return d.name })
+      .text(function (d) { return d.me ? 'You' : d.name })
 
     node.select('text')
       .attr('font-size', function (d) {
@@ -277,7 +304,7 @@ function TorrentGraph (root) {
   function remove (id) {
     debug('remove $s', id)
     var index = getNodeIndex(id)
-    if (index === -1) throw new Error('remove: node does not exit')
+    if (index === -1) throw new Error('remove: node does not exist')
     model.nodes.splice(index, 1)
     update()
   }
@@ -309,10 +336,36 @@ function TorrentGraph (root) {
 
   function unchoke (sourceId, targetId) {
     debug('unchoke %s %s', sourceId, targetId)
+    // TODO: resume opacity
+
   }
 
   function choke (sourceId, targetId) {
     debug('choke %s %s', sourceId, targetId)
+    // TODO: lower opacity
+  }
+
+  function seed (id, seeding){
+    debug(id, 'is seeding:', seeding);
+    if (typeof seeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean');
+    var index = getNodeIndex(id)
+    if (index === -1) throw new Error('seed: node does not exist')
+    model.nodes[index].seeder = seeding;
+    update();
+  }
+
+  function rate(sourceId, targetId, bytesRate){
+    debug('rate update:', sourceId+'<->'+targetId, 'at', prettierBytes(bytesRate));
+    if (typeof bytesRate !== 'number' || bytesRate<0) throw new Error('rate: 3th param must be a positive number')
+    var sourceNode = getNode(sourceId)
+    if (!sourceNode) throw new Error('connect: invalid source id')
+    var targetNode = getNode(targetId)
+    if (!targetNode) throw new Error('connect: invalid target id')
+    var index = getLinkIndex(sourceNode.index, targetNode.index)
+    if (index === -1) throw new Error('disconnect: connection does not exist')
+    model.links[index].rate = speedRange(bytesRate);
+    debug('rate:',model.links[index].rate);
+    update();
   }
 
   window.addEventListener('resize', debounce(refresh, 500))
@@ -324,6 +377,8 @@ function TorrentGraph (root) {
     connect: connect,
     disconnect: disconnect,
     unchoke: unchoke,
-    choke: choke
+    choke: choke,
+    seed: seed,
+    rate: rate
   }
 }
