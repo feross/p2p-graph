@@ -9,10 +9,11 @@
 
 ### Real-time P2P network visualization with D3
 
-You can see this package in action on the [webtorrent.io](https://webtorrent.io/)
-homepage.
+![demo](demo.gif)
 
-Works in the browser with [browserify](http://browserify.org/)! This module is used by [WebTorrent](http://webtorrent.io).
+Works in the browser with [browserify](http://browserify.org/)! This module is used
+by [WebTorrent](http://webtorrent.io). You can see this package in action on the
+[webtorrent.io](https://webtorrent.io/) homepage.
 
 ## install
 
