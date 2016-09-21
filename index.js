@@ -195,7 +195,7 @@ function TorrentGraph (root) {
 
     g.append('text')
       .attr('class', 'text')
-      .text(function (d) { return d.me ? 'You' : d.name })
+      .text(function (d) { return d.name })
 
     node.select('text')
       .attr('font-size', function (d) {
