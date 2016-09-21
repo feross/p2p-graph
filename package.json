@@ -1,0 +1,40 @@
+{
+  "name": "p2p-graph",
+  "description": "Real-time P2P network visualization with D3",
+  "version": "0.0.0",
+  "author": {
+    "name": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/feross/p2p-graph/issues"
+  },
+  "dependencies": {
+    "d3": "^3.5.6",
+    "debounce": "^1.0.0"
+  },
+  "devDependencies": {
+    "standard": "*",
+    "tape": "^4.0.0"
+  },
+  "homepage": "https://github.com/feross/p2p-graph",
+  "keywords": [
+    "real-time",
+    "p2p",
+    "peer-to-peer",
+    "network",
+    "visualization",
+    "d3",
+    "graph"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/feross/p2p-graph.git"
+  },
+  "scripts": {
+    "test": "standard"
+  }
+}
