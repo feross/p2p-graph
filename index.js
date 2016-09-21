@@ -1,7 +1,7 @@
 module.exports = TorrentGraph
 
 var d3 = require('d3')
-var debug = require('debug')('webtorrent-www:torrent-graph')
+var debug = require('debug')('p2p-graph')
 var debounce = require('debounce')
 
 var COLORS = {
