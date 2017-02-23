@@ -23,7 +23,7 @@ var COLORS = {
             ? d3.hsl(120, 0.7, 0.725) // green
             : d3.hsl(55, 0.7, 0.725) // yellow
     },
-    hover: '#FAFAFA',
+    hover: '#A9A9A9',
     dep: '#252929'
   }
 }
@@ -314,6 +314,11 @@ function TorrentGraph (root) {
     return -1
   }
 
+  function list () {
+    debug('node list() called')
+    return model.nodes
+  }
+
   function add (node) {
     debug('add %s %o', node.id, node)
     if (getNode(node.id)) throw new Error('add: cannot add duplicate node')
@@ -394,6 +399,7 @@ function TorrentGraph (root) {
   refresh()
 
   return {
+    list: list,
     add: add,
     remove: remove,
     connect: connect,
