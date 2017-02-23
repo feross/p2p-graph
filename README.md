@@ -75,6 +75,14 @@ Disconnect two nodes, identified by `id1` and `id2`, from each other.
 
 Remove a node, identified by `id`, from the graph.
 
+### graph.seed(id, seeding)
+
+Change a node's status identified by `id`, `seeding` must be true or false.
+
+### graph.rate(id1, id2, speed)
+
+Update the transfer rate between two nodes identified by `id1` and `id2`. `speed` must be expressed in bytes.
+
 ## license
 
 MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org).
