@@ -17,6 +17,9 @@
     "prettier-bytes": "^1.0.3"
   },
   "devDependencies": {
+    "async": "^2.0.1",
+    "browserify": "^14.1.0",
+    "http-server": "^0.9.0",
     "standard": "*",
     "tape": "^4.0.0"
   },
@@ -38,6 +41,15 @@
   },
   "scripts": {
     "test": "standard",
-    "bundle": "browserify index.js --standalone p2p-graph > bundle.js"
+    "start": "npm run bundle && npm run example && npm run server",
+    "bundle": "browserify -r ./index.js:p2p-graph > dist/p2p-graph.bundle.js",
+    "example": "cp dist/p2p-graph.bundle.js example/; browserify -r async -r debug > example/libs.js",
+    "server": "http-server example/ -p 2222"
+  },
+  "standard": {
+    "ignore": [
+      "dist/",
+      "example/"
+    ]
   }
 }
