@@ -201,6 +201,9 @@ function TorrentGraph (root) {
               }).start()
 
               link.style('opacity', function (l, i) {
+                console.log('l', l)
+                console.log('i', i)
+                console.log('opacity:', l.source.active && l.target.active ? 1 : 0.02)
                 return l.source.active && l.target.active ? 1 : 0.02
               })
             })
@@ -271,6 +274,8 @@ function TorrentGraph (root) {
   }
 
   function connected (d, o) {
+    console.log('connected d:', d)
+    console.log('connected o:', o)
     return o.id === d.id ||
             (d.children && d.children.indexOf(o.id) !== -1) ||
             (o.children && o.children.indexOf(d.id) !== -1) ||
@@ -362,14 +367,38 @@ function TorrentGraph (root) {
     update()
   }
 
+  function hasPeer () {
+    var args = Array.prototype.slice.call(arguments, 0)
+    debug('Checking for peers:', args)
+    return !args.some(function (nodeId) {
+      return !getNode(nodeId)
+    })
+  }
+
+  function hasLink (sourceId, targetId) {
+    var sourceNode = getNode(sourceId)
+    if (!sourceNode) throw new Error('connect: invalid source id')
+    var targetNode = getNode(targetId)
+    if (!targetNode) throw new Error('connect: invalid target id')
+    return !!getLink(sourceNode.index, targetNode.index)
+  }
+
+  function areConnected (sourceId, targetId) {
+    var sourceNode = getNode(sourceId)
+    if (!sourceNode) throw new Error('connect: invalid source id')
+    var targetNode = getNode(targetId)
+    if (!targetNode) throw new Error('connect: invalid target id')
+    return (getLink(sourceNode.index, targetNode.index) || getLink(targetNode.index, sourceNode.index))
+  }
+
   function unchoke (sourceId, targetId) {
     debug('unchoke %s %s', sourceId, targetId)
-            // TODO: resume opacity
+    // TODO: resume opacity
   }
 
   function choke (sourceId, targetId) {
     debug('choke %s %s', sourceId, targetId)
-            // TODO: lower opacity
+    // TODO: lower opacity
   }
 
   function seed (id, seeding) {
@@ -401,9 +430,13 @@ function TorrentGraph (root) {
   return {
     list: list,
     add: add,
+    hasPeer: hasPeer,
+    hasLink: hasLink,
     remove: remove,
     connect: connect,
     disconnect: disconnect,
+    getLink: getLink,
+    areConnected: areConnected,
     unchoke: unchoke,
     choke: choke,
     seed: seed,
