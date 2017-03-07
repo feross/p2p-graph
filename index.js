@@ -358,9 +358,9 @@ function TorrentGraph (root) {
   function disconnect (sourceId, targetId) {
     debug('disconnect %s %s', sourceId, targetId)
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('disconnect: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('disconnect: invalid target id')
     var index = getLinkIndex(sourceNode.index, targetNode.index)
     if (index === -1) throw new Error('disconnect: connection does not exist')
     model.links.splice(index, 1)
@@ -377,17 +377,17 @@ function TorrentGraph (root) {
 
   function hasLink (sourceId, targetId) {
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('hasLink: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('hasLink: invalid target id')
     return !!getLink(sourceNode.index, targetNode.index)
   }
 
   function areConnected (sourceId, targetId) {
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('areConnected: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('areConnected: invalid target id')
     return (getLink(sourceNode.index, targetNode.index) || getLink(targetNode.index, sourceNode.index))
   }
 
@@ -414,11 +414,11 @@ function TorrentGraph (root) {
     debug('rate update:', sourceId + '<->' + targetId, 'at', prettierBytes(bytesRate))
     if (typeof bytesRate !== 'number' || bytesRate < 0) throw new Error('rate: 3th param must be a positive number')
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('rate: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('rate: invalid target id')
     var index = getLinkIndex(sourceNode.index, targetNode.index)
-    if (index === -1) throw new Error('disconnect: connection does not exist')
+    if (index === -1) throw new Error('rate: connection does not exist')
     model.links[index].rate = speedRange(bytesRate)
     debug('rate:', model.links[index].rate)
     update()
