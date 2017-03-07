@@ -13,7 +13,7 @@
 
 Works in the browser with [browserify](http://browserify.org/)! This module is used
 by [WebTorrent](http://webtorrent.io). You can see this package in action on the
-[webtorrent.io](https://webtorrent.io/) homepage.
+[webtorrent.io](https://webtorrent.io/) homepage or play with it on the [esnextb.in demo](https://esnextb.in/?gist=6d2ede2438db14c108d30343f352ad8c).
 
 ## install
 
