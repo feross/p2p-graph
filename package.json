@@ -11,17 +11,16 @@
     "url": "https://github.com/feross/p2p-graph/issues"
   },
   "dependencies": {
-    "d3": "^3.5.6",
-    "debounce": "^1.0.0",
-    "debug": "^2.2.0",
-    "prettier-bytes": "^1.0.3"
+    "d3": "3.5.6",
+    "debounce": "1.0.0",
+    "debug": "2.2.0",
+    "prettier-bytes": "1.0.3"
   },
   "devDependencies": {
-    "async": "^2.0.1",
-    "browserify": "^14.1.0",
-    "http-server": "^0.9.0",
-    "standard": "*",
-    "tape": "^4.0.0"
+    "async": "2.0.1",
+    "browserify": "14.1.0",
+    "http-server": "0.9.0",
+    "standard": "*"
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
