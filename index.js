@@ -23,7 +23,7 @@ var COLORS = {
             ? d3.hsl(120, 0.7, 0.725) // green
             : d3.hsl(55, 0.7, 0.725) // yellow
     },
-    hover: '#FAFAFA',
+    hover: '#A9A9A9',
     dep: '#252929'
   }
 }
@@ -195,13 +195,13 @@ function TorrentGraph (root) {
               force.charge(function (o) {
                 return (o.active ? -100 : -5) * scale()
               }).linkDistance(function (l) {
-                return (l.source.active && l.target.active ? 100 : 20) * scale()
+                return (l.source.active && l.target.active ? 100 : 60) * scale()
               }).linkStrength(function (l) {
                 return (l.source === d || l.target === d ? 1 : 0) * scale()
               }).start()
 
               link.style('opacity', function (l, i) {
-                return l.source.active && l.target.active ? 0.2 : 0.02
+                return l.source.active && l.target.active ? 1 : 0.02
               })
             })
 
@@ -314,6 +314,11 @@ function TorrentGraph (root) {
     return -1
   }
 
+  function list () {
+    debug('node list() called')
+    return model.nodes
+  }
+
   function add (node) {
     debug('add %s %o', node.id, node)
     if (getNode(node.id)) throw new Error('add: cannot add duplicate node')
@@ -394,6 +399,7 @@ function TorrentGraph (root) {
   refresh()
 
   return {
+    list: list,
     add: add,
     remove: remove,
     connect: connect,
