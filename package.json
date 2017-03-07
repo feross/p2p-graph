@@ -1,7 +1,7 @@
 {
   "name": "p2p-graph",
   "description": "Real-time P2P network visualization with D3",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Feross Aboukhadijeh",
     "email": "feross@feross.org",
@@ -42,13 +42,12 @@
   "scripts": {
     "test": "standard",
     "start": "npm run bundle && npm run example && npm run server",
-    "bundle": "browserify -r ./index.js:p2p-graph > dist/p2p-graph.bundle.js",
-    "example": "cp dist/p2p-graph.bundle.js example/; browserify -r async -r debug > example/libs.js",
+    "bundle": "browserify -r ./index.js:p2p-graph > example/dist/p2p-graph.bundle.js",
+    "example": "browserify -r async -r debug > example/libs.js",
     "server": "http-server example/ -p 2222"
   },
   "standard": {
     "ignore": [
-      "dist/",
       "example/"
     ]
   }
