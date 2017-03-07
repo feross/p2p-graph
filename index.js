@@ -195,13 +195,13 @@ function TorrentGraph (root) {
               force.charge(function (o) {
                 return (o.active ? -100 : -5) * scale()
               }).linkDistance(function (l) {
-                return (l.source.active && l.target.active ? 100 : 20) * scale()
+                return (l.source.active && l.target.active ? 100 : 60) * scale()
               }).linkStrength(function (l) {
                 return (l.source === d || l.target === d ? 1 : 0) * scale()
               }).start()
 
               link.style('opacity', function (l, i) {
-                return l.source.active && l.target.active ? 0.2 : 0.02
+                return l.source.active && l.target.active ? 1 : 0.02
               })
             })
 
