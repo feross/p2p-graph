@@ -5,23 +5,26 @@ var debug = require('debug')('p2p-graph')
 var debounce = require('debounce')
 var prettierBytes = require('prettier-bytes')
 
-var COLORS = {
+var STYLE = {
   links: {
-    color: '#C8C8C8',
     width: 0.7, // default link thickness
     maxWidth: 5.0, // max thickness
     maxBytes: 2097152 // link max thickness at 2MB
+  }
+}
+
+var COLORS = {
+  links: {
+    color: '#C8C8C8'
   },
   text: {
     subtitle: '#C8C8C8'
   },
   nodes: {
     method: function (d, i) {
-      return d.me
-          ? d3.hsl(210, 0.7, 0.725) // blue
-          : d.seeder
-            ? d3.hsl(120, 0.7, 0.725) // green
-            : d3.hsl(55, 0.7, 0.725) // yellow
+      return d.me ? d3.hsl(210, 0.7, 0.725) // blue
+        : d.seeder ? d3.hsl(120, 0.7, 0.725) // green
+        : d3.hsl(55, 0.7, 0.725) // yellow
     },
     hover: '#A9A9A9',
     dep: '#252929'
@@ -46,9 +49,9 @@ function TorrentGraph (root) {
     var speed = prettierBytes(bytes).split(' ')
             // var value = speed[0]  // ex. 259.0
     var unit = speed[1] // ex. KB (not yet used)
-    bytes = bytes >= COLORS.links.maxBytes ? COLORS.links.maxBytes : bytes
+    bytes = bytes >= STYLE.links.maxBytes ? STYLE.links.maxBytes : bytes
     return {
-      width: bytes * COLORS.links.maxWidth / COLORS.links.maxBytes,
+      width: bytes * STYLE.links.maxWidth / STYLE.links.maxBytes,
       unit: unit
     }
   }
@@ -126,11 +129,11 @@ function TorrentGraph (root) {
             .remove()
 
     link.style('stroke-width', function (d) {
-            // setting thickness
+      // setting thickness
       return d.rate
-              ? d.rate.width < COLORS.links.width
-                ? COLORS.links.width : d.rate.width
-              : COLORS.links.width
+              ? d.rate.width < STYLE.links.width
+                ? STYLE.links.width : d.rate.width
+              : STYLE.links.width
     })
 
     link.style('opacity', function (d) {
@@ -201,9 +204,6 @@ function TorrentGraph (root) {
               }).start()
 
               link.style('opacity', function (l, i) {
-                console.log('l', l)
-                console.log('i', i)
-                console.log('opacity:', l.source.active && l.target.active ? 1 : 0.02)
                 return l.source.active && l.target.active ? 1 : 0.02
               })
             })
@@ -274,8 +274,6 @@ function TorrentGraph (root) {
   }
 
   function connected (d, o) {
-    console.log('connected d:', d)
-    console.log('connected o:', o)
     return o.id === d.id ||
             (d.children && d.children.indexOf(o.id) !== -1) ||
             (o.children && o.children.indexOf(d.id) !== -1) ||
@@ -401,12 +399,12 @@ function TorrentGraph (root) {
     // TODO: lower opacity
   }
 
-  function seed (id, seeding) {
-    debug(id, 'is seeding:', seeding)
-    if (typeof seeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean')
+  function seed (id, isSeeding) {
+    debug(id, 'isSeeding:', isSeeding)
+    if (typeof isSeeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean')
     var index = getNodeIndex(id)
     if (index === -1) throw new Error('seed: node does not exist')
-    model.nodes[index].seeder = seeding
+    model.nodes[index].seeder = isSeeding
     update()
   }
 
