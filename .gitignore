@@ -1,3 +1,4 @@
 node_modules/
 example/dist/*
 example/libs.js
+npm-debug.log
