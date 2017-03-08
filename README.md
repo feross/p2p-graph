@@ -95,9 +95,9 @@ Return `true` the given Link exists, otherwise `false` (direction matters!).
 
 Remove a node, identified by `id`, from the graph.
 
-### graph.seed(id, seeding)
+### graph.seed(id, isSeeding)
 
-Change a node's status identified by `id`, `seeding` must be true or false.
+Change a node's status identified by `id`, `isSeeding` must be true or false.
 
 ### graph.rate(id1, id2, speed)
 
