@@ -1,4 +1,4 @@
 node_modules/
-example/dist/*
+example/p2p-graph.bundle.js
 example/libs.js
 npm-debug.log
