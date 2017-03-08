@@ -41,7 +41,7 @@
   "scripts": {
     "test": "standard",
     "start": "npm run bundle && npm run example && npm run server",
-    "bundle": "browserify -r ./index.js:p2p-graph > example/dist/p2p-graph.bundle.js",
+    "bundle": "browserify -r ./index.js:p2p-graph > example/p2p-graph.bundle.js",
     "example": "browserify -r async -r debug > example/libs.js",
     "server": "http-server example/ -p 2222"
   },
