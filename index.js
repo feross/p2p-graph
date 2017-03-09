@@ -5,23 +5,26 @@ var debug = require('debug')('p2p-graph')
 var debounce = require('debounce')
 var prettierBytes = require('prettier-bytes')
 
-var COLORS = {
+var STYLE = {
   links: {
-    color: '#C8C8C8',
     width: 0.7, // default link thickness
     maxWidth: 5.0, // max thickness
     maxBytes: 2097152 // link max thickness at 2MB
+  }
+}
+
+var COLORS = {
+  links: {
+    color: '#C8C8C8'
   },
   text: {
     subtitle: '#C8C8C8'
   },
   nodes: {
     method: function (d, i) {
-      return d.me
-          ? d3.hsl(210, 0.7, 0.725) // blue
-          : d.seeder
-            ? d3.hsl(120, 0.7, 0.725) // green
-            : d3.hsl(55, 0.7, 0.725) // yellow
+      return d.me ? d3.hsl(210, 0.7, 0.725) // blue
+        : d.seeder ? d3.hsl(120, 0.7, 0.725) // green
+        : d3.hsl(55, 0.7, 0.725) // yellow
     },
     hover: '#A9A9A9',
     dep: '#252929'
@@ -46,9 +49,9 @@ function TorrentGraph (root) {
     var speed = prettierBytes(bytes).split(' ')
             // var value = speed[0]  // ex. 259.0
     var unit = speed[1] // ex. KB (not yet used)
-    bytes = bytes >= COLORS.links.maxBytes ? COLORS.links.maxBytes : bytes
+    bytes = bytes >= STYLE.links.maxBytes ? STYLE.links.maxBytes : bytes
     return {
-      width: bytes * COLORS.links.maxWidth / COLORS.links.maxBytes,
+      width: bytes * STYLE.links.maxWidth / STYLE.links.maxBytes,
       unit: unit
     }
   }
@@ -126,11 +129,11 @@ function TorrentGraph (root) {
             .remove()
 
     link.style('stroke-width', function (d) {
-            // setting thickness
+      // setting thickness
       return d.rate
-              ? d.rate.width < COLORS.links.width
-                ? COLORS.links.width : d.rate.width
-              : COLORS.links.width
+              ? d.rate.width < STYLE.links.width
+                ? STYLE.links.width : d.rate.width
+              : STYLE.links.width
     })
 
     link.style('opacity', function (d) {
@@ -353,31 +356,55 @@ function TorrentGraph (root) {
   function disconnect (sourceId, targetId) {
     debug('disconnect %s %s', sourceId, targetId)
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('disconnect: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('disconnect: invalid target id')
     var index = getLinkIndex(sourceNode.index, targetNode.index)
     if (index === -1) throw new Error('disconnect: connection does not exist')
     model.links.splice(index, 1)
     update()
   }
 
+  function hasPeer () {
+    var args = Array.prototype.slice.call(arguments, 0)
+    debug('Checking for peers:', args)
+    return !args.some(function (nodeId) {
+      return !getNode(nodeId)
+    })
+  }
+
+  function hasLink (sourceId, targetId) {
+    var sourceNode = getNode(sourceId)
+    if (!sourceNode) throw new Error('hasLink: invalid source id')
+    var targetNode = getNode(targetId)
+    if (!targetNode) throw new Error('hasLink: invalid target id')
+    return !!getLink(sourceNode.index, targetNode.index)
+  }
+
+  function areConnected (sourceId, targetId) {
+    var sourceNode = getNode(sourceId)
+    if (!sourceNode) throw new Error('areConnected: invalid source id')
+    var targetNode = getNode(targetId)
+    if (!targetNode) throw new Error('areConnected: invalid target id')
+    return (getLink(sourceNode.index, targetNode.index) || getLink(targetNode.index, sourceNode.index))
+  }
+
   function unchoke (sourceId, targetId) {
     debug('unchoke %s %s', sourceId, targetId)
-            // TODO: resume opacity
+    // TODO: resume opacity
   }
 
   function choke (sourceId, targetId) {
     debug('choke %s %s', sourceId, targetId)
-            // TODO: lower opacity
+    // TODO: lower opacity
   }
 
-  function seed (id, seeding) {
-    debug(id, 'is seeding:', seeding)
-    if (typeof seeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean')
+  function seed (id, isSeeding) {
+    debug(id, 'isSeeding:', isSeeding)
+    if (typeof isSeeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean')
     var index = getNodeIndex(id)
     if (index === -1) throw new Error('seed: node does not exist')
-    model.nodes[index].seeder = seeding
+    model.nodes[index].seeder = isSeeding
     update()
   }
 
@@ -385,11 +412,11 @@ function TorrentGraph (root) {
     debug('rate update:', sourceId + '<->' + targetId, 'at', prettierBytes(bytesRate))
     if (typeof bytesRate !== 'number' || bytesRate < 0) throw new Error('rate: 3th param must be a positive number')
     var sourceNode = getNode(sourceId)
-    if (!sourceNode) throw new Error('connect: invalid source id')
+    if (!sourceNode) throw new Error('rate: invalid source id')
     var targetNode = getNode(targetId)
-    if (!targetNode) throw new Error('connect: invalid target id')
+    if (!targetNode) throw new Error('rate: invalid target id')
     var index = getLinkIndex(sourceNode.index, targetNode.index)
-    if (index === -1) throw new Error('disconnect: connection does not exist')
+    if (index === -1) throw new Error('rate: connection does not exist')
     model.links[index].rate = speedRange(bytesRate)
     debug('rate:', model.links[index].rate)
     update()
@@ -401,9 +428,13 @@ function TorrentGraph (root) {
   return {
     list: list,
     add: add,
+    hasPeer: hasPeer,
+    hasLink: hasLink,
     remove: remove,
     connect: connect,
     disconnect: disconnect,
+    getLink: getLink,
+    areConnected: areConnected,
     unchoke: unchoke,
     choke: choke,
     seed: seed,

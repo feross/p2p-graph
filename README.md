@@ -15,13 +15,13 @@ Works in the browser with [browserify](http://browserify.org/)! This module is u
 by [WebTorrent](http://webtorrent.io). You can see this package in action on the
 [webtorrent.io](https://webtorrent.io/) homepage or play with it on the [esnextb.in demo](https://esnextb.in/?gist=6d2ede2438db14c108d30343f352ad8c).
 
-## install
+## Install
 
 ```
 npm install p2p-graph
 ```
 
-## usage
+## Usage
 
 ```js
 var Graph = require('p2p-graph')
@@ -43,7 +43,11 @@ graph.add({
 graph.connect('peer1', 'peer2')
 ```
 
-## api
+# API
+
+**Heads Up!** : Represented Graphs are directed!
+
+> In graph theory, a directed graph (or digraph) is a graph that is a set of vertices connected by edges, where the edges have a direction associated with them.
 
 ### graph = new Graph(rootElem)
 
@@ -71,13 +75,29 @@ Connect to two nodes, identified by `id1` and `id2`, to each other.
 
 Disconnect two nodes, identified by `id1` and `id2`, from each other.
 
+### graph.areConnected(id1, id2)
+
+Check whether two nodes identified by `id1` and `id2` are somehow connected (`id1 --> id2` or `id2 --> id1`).
+
+### graph.getLink(id1, id2)
+
+If exists return the link between `id1` and `id2`, otherwise `null`.
+
+### graph.hasPeer(Id1[, ...IdX])
+
+Return `true` if all the given Nodes exists, otherwise `false`.
+
+### graph.hasLink(Id1, Id2)
+
+Return `true` the given Link exists, otherwise `false` (direction matters!).
+
 ### graph.remove(id)
 
 Remove a node, identified by `id`, from the graph.
 
-### graph.seed(id, seeding)
+### graph.seed(id, isSeeding)
 
-Change a node's status identified by `id`, `seeding` must be true or false.
+Change a node's status identified by `id`, `isSeeding` must be true or false.
 
 ### graph.rate(id1, id2, speed)
 
