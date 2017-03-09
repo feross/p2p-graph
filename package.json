@@ -17,20 +17,19 @@
     "prettier-bytes": "^1.0.3"
   },
   "devDependencies": {
-    "async": "^2.1.5",
     "browserify": "^14.1.0",
-    "http-server": "^0.9.0",
-    "standard": "*"
+    "standard": "*",
+    "uglify-js": "^2.8.10"
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
-    "real-time",
+    "d3",
+    "graph",
+    "network",
     "p2p",
     "peer-to-peer",
-    "network",
-    "visualization",
-    "d3",
-    "graph"
+    "real-time",
+    "visualization"
   ],
   "license": "MIT",
   "main": "index.js",
@@ -39,10 +38,7 @@
     "url": "git://github.com/feross/p2p-graph.git"
   },
   "scripts": {
-    "test": "standard",
-    "start": "npm run bundle && npm run example && npm run server",
-    "bundle": "browserify -r ./index.js:p2p-graph > example/p2p-graph.bundle.js",
-    "example": "browserify -r async -r debug > example/libs.js",
-    "server": "http-server example/ -p 2222"
+    "build": "browserify -s P2PGraph -e ./ | uglifyjs -c warnings=false -m > p2p-graph.min.js",
+    "test": "standard"
   }
 }
