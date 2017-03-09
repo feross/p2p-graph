@@ -19,6 +19,7 @@
   "devDependencies": {
     "browserify": "^14.1.0",
     "standard": "*",
+    "uglify-js": "^2.8.10"
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
@@ -37,6 +38,7 @@
     "url": "git://github.com/feross/p2p-graph.git"
   },
   "scripts": {
-    "test": "standard",
+    "build": "browserify -s P2PGraph -e ./ | uglifyjs -c warnings=false -m > p2p-graph.min.js",
+    "test": "standard"
   }
 }
