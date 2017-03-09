@@ -17,10 +17,8 @@
     "prettier-bytes": "^1.0.3"
   },
   "devDependencies": {
-    "async": "^2.1.5",
     "browserify": "^14.1.0",
-    "http-server": "^0.9.0",
-    "standard": "*"
+    "standard": "*",
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
@@ -40,9 +38,5 @@
   },
   "scripts": {
     "test": "standard",
-    "start": "npm run bundle && npm run example && npm run server",
-    "bundle": "browserify -r ./index.js:p2p-graph > example/p2p-graph.bundle.js",
-    "example": "browserify -r async -r debug > example/libs.js",
-    "server": "http-server example/ -p 2222"
   }
 }
