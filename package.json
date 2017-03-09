@@ -44,10 +44,5 @@
     "bundle": "browserify -r ./index.js:p2p-graph > example/p2p-graph.bundle.js",
     "example": "browserify -r async -r debug > example/libs.js",
     "server": "http-server example/ -p 2222"
-  },
-  "standard": {
-    "ignore": [
-      "example/"
-    ]
   }
 }
