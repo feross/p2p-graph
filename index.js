@@ -368,8 +368,8 @@ function TorrentGraph (root) {
   function hasPeer () {
     var args = Array.prototype.slice.call(arguments, 0)
     debug('Checking for peers:', args)
-    return !args.some(function (nodeId) {
-      return !getNode(nodeId)
+    return args.every(function (nodeId) {
+      return getNode(nodeId)
     })
   }
 
