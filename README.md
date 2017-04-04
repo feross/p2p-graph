@@ -109,6 +109,10 @@ Update the transfer rate between two nodes identified by `id1` and `id2`. `speed
 
 Return an array of Nodes.
 
+### graph.destroy()
+
+Destroys the graph and all the listeners related to it.
+
 ## license
 
 MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org).
