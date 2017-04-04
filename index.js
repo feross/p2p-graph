@@ -422,7 +422,17 @@ function TorrentGraph (root) {
     update()
   }
 
-  window.addEventListener('resize', debounce(refresh, 500))
+  var resizeEventHandler = debounce(refresh, 500);
+
+  window.addEventListener('resize', resizeEventHandler);
+
+  function destroy(){
+    debug('destroy:rootElement');
+    root.remove();
+    debug('destroy:resizeEventListener');
+    window.removeEventListener('resize', resizeEventHandler);
+  }
+
   refresh()
 
   return {
@@ -438,6 +448,7 @@ function TorrentGraph (root) {
     unchoke: unchoke,
     choke: choke,
     seed: seed,
-    rate: rate
+    rate: rate,
+    destroy: destroy
   }
 }
