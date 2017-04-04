@@ -426,7 +426,7 @@ function TorrentGraph (root) {
 
   window.addEventListener('resize', resizeEventHandler)
 
-  function destroy (){
+  function destroy () {
     debug('destroy:rootElement')
     root.remove()
     debug('destroy:resizeEventListener')
