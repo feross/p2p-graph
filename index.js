@@ -39,8 +39,8 @@ function TorrentGraph (root, size) {
   }
 
   if (size) {
-    if (size.height && typeof size.height !== 'function' && size.height !== 'default' && size.height !== 'auto' && Number.isNaN(size.height)) throw new Error('Height should be a Number or a Function')
-    if (size.width && size.width !== 'default' && typeof size.width !== 'function' && size.width !== 'auto' && Number.isNaN(size.width)) throw new Error('Width should be a Number of a Function')
+    if (size.height && typeof size.height !== 'function' && size.height !== 'default' && size.height !== 'auto' && typeof size.height !== 'number') throw new Error('Height should be a Number or a Function')
+    if (size.width && size.width !== 'default' && typeof size.width !== 'function' && size.width !== 'auto' && typeof size.width !== 'number') throw new Error('Width should be a Number of a Function')
   }
 
   function scale () {
@@ -66,9 +66,9 @@ function TorrentGraph (root, size) {
     var width = root.offsetWidth
 
     if (size) {
-      if (!Number.isNaN(size.width)) width = size.width
+      if (typeof size.width === 'number') width = size.width
       if (typeof size.width === 'function') width = size.width()
-      if (!Number.isNaN(size.height)) height = size.height
+      if (typeof size.height === 'number') height = size.height
       if (typeof size.height === 'function') height = size.height()
       if (size.height === 'auto') height = root.offsetHeight
     }
