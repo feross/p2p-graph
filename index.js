@@ -68,7 +68,7 @@ function TorrentGraph (root, size) {
     if (size) {
       if (!Number.isNaN(size.width)) width = size.width
       if (typeof size.width === 'function') width = size.width()
-      if (!Number.isNan(size.height)) height = size.height
+      if (!Number.isNaN(size.height)) height = size.height
       if (typeof size.height === 'function') height = size.height()
       if (size.height === 'auto') height = root.offsetHeight
     }
