@@ -175,7 +175,6 @@ function TorrentGraph (root) {
                     .style('stroke', null)
             })
             .on('click', function (d) {
-
               if (focus === d) {
                 force.charge(-200 * scale())
                         .linkDistance(100 * scale())
@@ -197,7 +196,7 @@ function TorrentGraph (root) {
               if (undefined !== onSelect) {
                 onSelect(d.id)
               }
- 
+
               node.style('opacity', function (o) {
                 o.active = connected(d, o)
                 return o.active ? 1 : 0.2
@@ -431,7 +430,7 @@ function TorrentGraph (root) {
   }
 
   function on (event, cb) {
-    if (event === "select") {
+    if (event === 'select') {
       onSelect = cb
     }
   }
