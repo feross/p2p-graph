@@ -334,6 +334,13 @@ function TorrentGraph (root) {
     var index = getNodeIndex(id)
     if (index === -1) throw new Error('remove: node does not exist')
     model.nodes.splice(index, 1)
+
+    for (var i = model.links.length - 1; i >= 0; i -= 1) {
+      if ((model.links[i].source.id == id) || (model.links[i].target.id == id)) {
+        model.links.splice(i, 1)
+      }
+    }
+
     update()
   }
 
