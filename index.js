@@ -60,6 +60,7 @@ function TorrentGraph (root) {
   var height = (window.innerWidth >= 900) ? 400 : 250
 
   var focus
+  var onSelect
 
   model.links.forEach(function (link) {
     var source = model.nodes[link.source]
@@ -174,6 +175,7 @@ function TorrentGraph (root) {
                     .style('stroke', null)
             })
             .on('click', function (d) {
+
               if (focus === d) {
                 force.charge(-200 * scale())
                         .linkDistance(100 * scale())
@@ -184,12 +186,18 @@ function TorrentGraph (root) {
                 link.style('opacity', 0.3)
 
                 focus = false
+                if (undefined !== onSelect) {
+                  onSelect(false)
+                }
 
                 return
               }
 
               focus = d
-
+              if (undefined !== onSelect) {
+                onSelect(d.id)
+              }
+ 
               node.style('opacity', function (o) {
                 o.active = connected(d, o)
                 return o.active ? 1 : 0.2
@@ -422,6 +430,12 @@ function TorrentGraph (root) {
     update()
   }
 
+  function on (event, cb) {
+    if (event === "select") {
+      onSelect = cb
+    }
+  }
+
   var resizeEventHandler = debounce(refresh, 500)
 
   window.addEventListener('resize', resizeEventHandler)
@@ -449,6 +463,7 @@ function TorrentGraph (root) {
     choke: choke,
     seed: seed,
     rate: rate,
+    on: on,
     destroy: destroy
   }
 }
