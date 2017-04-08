@@ -336,7 +336,7 @@ function TorrentGraph (root) {
     model.nodes.splice(index, 1)
 
     for (var i = model.links.length - 1; i >= 0; i -= 1) {
-      if ((model.links[i].source.id == id) || (model.links[i].target.id == id)) {
+      if ((model.links[i].source.id === id) || (model.links[i].target.id === id)) {
         model.links.splice(i, 1)
       }
     }
