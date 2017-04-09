@@ -340,7 +340,16 @@ function TorrentGraph (root) {
     debug('remove $s', id)
     var index = getNodeIndex(id)
     if (index === -1) throw new Error('remove: node does not exist')
+
+    if ((focus !== false) && (focus.id === id)) {
+      focus = false
+      if (undefined !== onSelect) {
+        onSelect(false)
+      }
+    }
+
     model.nodes.splice(index, 1)
+
     update()
   }
 
