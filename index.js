@@ -185,7 +185,7 @@ function TorrentGraph (root) {
                 link.style('opacity', 0.3)
 
                 focus = false
-                if (undefined !== onSelect) {
+                if (onSelect !== undefined) {
                   onSelect(false)
                 }
 
@@ -193,7 +193,7 @@ function TorrentGraph (root) {
               }
 
               focus = d
-              if (undefined !== onSelect) {
+              if (onSelect !== undefined) {
                 onSelect(d.id)
               }
 

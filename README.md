@@ -30,8 +30,8 @@ var Graph = require('p2p-graph')
 
 var graph = new Graph('.root')
 
-graph.on("select", function(id) {
-  console.log(id + " selected!")
+graph.on("select", function (id) {
+  console.log(id + ' selected!')
 })
 
 // Add two peers
