@@ -348,7 +348,7 @@ P2PGraph.prototype._update = function () {
       self.emit('select', d.id)
 
       self._node.style('opacity', function (o) {
-        o.active = self.connected(d, o)
+        o.active = self._connected(d, o)
         return o.active ? 1 : 0.2
       })
 
