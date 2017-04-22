@@ -60,6 +60,7 @@ function TorrentGraph (root) {
   var height = (window.innerWidth >= 900) ? 400 : 250
 
   var focus
+  var onSelect
 
   model.links.forEach(function (link) {
     var source = model.nodes[link.source]
@@ -184,11 +185,17 @@ function TorrentGraph (root) {
                 link.style('opacity', 0.3)
 
                 focus = false
+                if (onSelect !== undefined) {
+                  onSelect(false)
+                }
 
                 return
               }
 
               focus = d
+              if (onSelect !== undefined) {
+                onSelect(d.id)
+              }
 
               node.style('opacity', function (o) {
                 o.active = connected(d, o)
@@ -333,7 +340,16 @@ function TorrentGraph (root) {
     debug('remove $s', id)
     var index = getNodeIndex(id)
     if (index === -1) throw new Error('remove: node does not exist')
+
+    if ((focus !== false) && (focus.id === id)) {
+      focus = false
+      if (undefined !== onSelect) {
+        onSelect(false)
+      }
+    }
+
     model.nodes.splice(index, 1)
+
     update()
   }
 
@@ -422,6 +438,12 @@ function TorrentGraph (root) {
     update()
   }
 
+  function on (event, cb) {
+    if (event === 'select') {
+      onSelect = cb
+    }
+  }
+
   var resizeEventHandler = debounce(refresh, 500)
 
   window.addEventListener('resize', resizeEventHandler)
@@ -449,6 +471,7 @@ function TorrentGraph (root) {
     choke: choke,
     seed: seed,
     rate: rate,
+    on: on,
     destroy: destroy
   }
 }
