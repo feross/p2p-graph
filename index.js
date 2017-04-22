@@ -290,11 +290,6 @@ P2PGraph.prototype._update = function () {
       : STYLE.links.width
   })
 
-  // TODO: remove
-  // link.style('opacity', function (d) {
-  //   debug()
-  // })
-
   var g = self._node.enter()
     .append('g')
     .attr('class', 'node')
