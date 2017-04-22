@@ -55,11 +55,27 @@ graph.connect('peer1', 'peer2')
 
 > In graph theory, a directed graph (or digraph) is a graph that is a set of vertices connected by edges, where the edges have a direction associated with them.
 
-### graph = new Graph(rootElem)
+### graph = new Graph(rootElem, size)
 
 Create a new P2P graph at the root DOM element `rootElem`. In addition to an
 `Element`, a query selector string (like `'.my-cool-element'`) can also be passed
 in.
+
+Also, you can pass in an object containing the desired width and height. The possible values for both are `auto`, `default` or a number (which represents the number of pixels). Aditionally you can pass in a function that evaluates on resize.
+- auto: Adjusts to the maximum existing space inside the `rootElem`
+- default: Height adjusts to 400 px on widescreens and 250 px on small screens
+Example:
+```
+var Graph = require('p2p-graph')
+//default
+var graph = new Graph('.root', {height: 'default', width: 'default'})
+//auto
+var graph = new Graph('.root', {height: 'auto', width: 'auto'})
+//fixed
+var graph = new Graph('.root', {height: 200, width: 400})
+//function
+var graph = new Graph('.root', {height: function () { ... }, width: function () { ... }})
+```
 
 ### graph.add(peer)
 

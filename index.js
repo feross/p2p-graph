@@ -31,11 +31,16 @@ var COLORS = {
   }
 }
 
-function TorrentGraph (root) {
+function TorrentGraph (root, size) {
   if (typeof root === 'string') root = document.querySelector(root)
   var model = {
     nodes: [],
     links: []
+  }
+
+  if (size) {
+    if (size.height && typeof size.height !== 'function' && size.height !== 'default' && size.height !== 'auto' && typeof size.height !== 'number') throw new Error('Height should be a Number or a Function')
+    if (size.width && size.width !== 'default' && typeof size.width !== 'function' && size.width !== 'auto' && typeof size.width !== 'number') throw new Error('Width should be a Number of a Function')
   }
 
   function scale () {
@@ -56,8 +61,23 @@ function TorrentGraph (root) {
     }
   }
 
-  var width = root.offsetWidth
-  var height = (window.innerWidth >= 900) ? 400 : 250
+  function getSize () {
+    var height = (window.innerWidth >= 900) ? 400 : 250
+    var width = root.offsetWidth
+
+    if (size) {
+      if (typeof size.width === 'number') width = size.width
+      if (typeof size.width === 'function') width = size.width()
+      if (typeof size.height === 'number') height = size.height
+      if (typeof size.height === 'function') height = size.height()
+      if (size.height === 'auto') height = root.offsetHeight
+    }
+
+    return {
+      width: width,
+      height: height
+    }
+  }
 
   var focus
   var onSelect
@@ -73,12 +93,13 @@ function TorrentGraph (root) {
     target.parents.push(link.source)
   })
 
+  var _size = getSize()
   var svg = d3.select(root).append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', _size.width)
+        .attr('height', _size.height)
 
   var force = d3.layout.force()
-        .size([width, height])
+        .size([_size.width, _size.height])
         .nodes(model.nodes)
         .links(model.links)
         .on('tick', function () {
@@ -246,16 +267,15 @@ function TorrentGraph (root) {
   }
 
   function refresh (e) {
-    width = root.offsetWidth
-    height = (window.innerWidth >= 900) ? 400 : 250
+    _size = getSize()
 
     force
-            .size([width, height])
+            .size([_size.width, _size.height])
             .resume()
 
     svg
-            .attr('width', root.offsetWidth)
-            .attr('height', height)
+            .attr('width', _size.width)
+            .attr('height', _size.width)
   }
 
   function childNodes (d) {
