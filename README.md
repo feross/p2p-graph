@@ -30,6 +30,10 @@ var Graph = require('p2p-graph')
 
 var graph = new Graph('.root')
 
+graph.on('select', function (id) {
+  console.log(id + ' selected!')
+})
+
 // Add two peers
 graph.add({
   id: 'peer1',
@@ -112,6 +116,12 @@ Return an array of Nodes.
 ### graph.destroy()
 
 Destroys the graph and all the listeners related to it.
+
+### graph.on('select', function (id) {})
+
+Event is fired when a node is selected (clicked on) by the user. The `id` argument is either the id
+of the selected peer, `false` to indicate that the peer has been deselected. Only one peer can be
+selected at any given time.
 
 ## license
 
