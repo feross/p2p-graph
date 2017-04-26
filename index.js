@@ -139,7 +139,7 @@ P2PGraph.prototype.remove = function (id) {
       self._model.links.splice(i, 1)
     }
   }
-  
+
   self._model.nodes.splice(index, 1)
   self._update()
 }
