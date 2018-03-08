@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "d3": "^3.5.6",
-    "debug": "^2.6.1",
+    "debug": "^3.1.0",
     "inherits": "^2.0.3",
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
-    "browserify": "^14.1.0",
+    "browserify": "^16.1.0",
     "standard": "*",
-    "uglify-js": "^2.8.10"
+    "uglify-js": "^3.3.12"
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
