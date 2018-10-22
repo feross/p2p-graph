@@ -10,7 +10,7 @@ declare module "p2p-graph" {
 
     type P2pGraphEvent = 'select';
 
-    export default class P2pGraph {
+    class P2pGraph {
         constructor(rootElem: HTMLElement);
 
         add(peer: P2pGraphPeer);
@@ -29,5 +29,6 @@ declare module "p2p-graph" {
         on(event: P2pGraphEvent, callback: (id: string) => void);
     }
 
+    export = P2pGraph;
 }
 
