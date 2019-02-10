@@ -11,7 +11,7 @@
     "url": "https://github.com/feross/p2p-graph/issues"
   },
   "dependencies": {
-    "d3": "^3.5.6",
+    "d3": "^5.9.1",
     "debug": "^3.1.0",
     "inherits": "^2.0.3",
     "throttleit": "^1.0.0"
