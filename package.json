@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "browserify": "^16.1.0",
-    "standard": "*",
+    "standard": ">=13.0.1",
     "uglify-js": "^3.3.12"
   },
   "homepage": "https://github.com/feross/p2p-graph",
