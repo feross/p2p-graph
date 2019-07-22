@@ -1,7 +1,7 @@
 {
   "name": "p2p-graph",
   "description": "Real-time P2P network visualization with D3",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": {
     "name": "Feross Aboukhadijeh",
     "email": "feross@feross.org",
