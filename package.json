@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "babel-minify": "^0.5.0",
-    "browserify": "^16.1.0",
+    "browserify": "16.3.0",
     "standard": "*"
   },
   "homepage": "https://github.com/feross/p2p-graph",
