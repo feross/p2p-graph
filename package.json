@@ -39,6 +39,7 @@
   },
   "scripts": {
     "build": "browserify --plugin tinyify -s P2PGraph -e ./ > p2p-graph.min.js",
+    "size": "npm run build && cat p2p-graph.min.js | gzip | wc -c",
     "test": "standard"
   }
 }
