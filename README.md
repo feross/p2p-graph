@@ -13,15 +13,18 @@
 
 ![demo](demo.gif)
 
-Works in the browser with [browserify](http://browserify.org/)! This module is used
-by [WebTorrent](http://webtorrent.io). You can see this package in action on the
-[webtorrent.io](https://webtorrent.io/) homepage or play with it on the [esnextb.in demo](https://esnextb.in/?gist=6d2ede2438db14c108d30343f352ad8c).
+This package is used by [WebTorrent](https://webtorrent.io). You can see this
+package in action on the [webtorrent.io](https://webtorrent.io) homepage or
+play with it on the
+[esnextb.in demo](https://esnextb.in/?gist=6d2ede2438db14c108d30343f352ad8c).
 
 ## Install
 
 ```
 npm install p2p-graph
 ```
+
+This package works in the browser with [browserify](https://browserify.org). If you do not use a bundler, you can use the [standalone script](https://bundle.run/p2p-graph) directly in a `<script>` tag.
 
 ## Usage
 

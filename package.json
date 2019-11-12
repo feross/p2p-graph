@@ -5,7 +5,7 @@
   "author": {
     "name": "Feross Aboukhadijeh",
     "email": "feross@feross.org",
-    "url": "http://feross.org/"
+    "url": "https://feross.org"
   },
   "bugs": {
     "url": "https://github.com/feross/p2p-graph/issues"
@@ -17,9 +17,10 @@
     "throttleit": "^1.0.0"
   },
   "devDependencies": {
+    "babel-minify": "^0.5.1",
     "browserify": "^16.1.0",
-    "standard": "*",
-    "tinyify": "^2.5.2"
+    "ecstatic": "^4.1.2",
+    "standard": "*"
   },
   "homepage": "https://github.com/feross/p2p-graph",
   "keywords": [
@@ -38,8 +39,8 @@
     "url": "git://github.com/feross/p2p-graph.git"
   },
   "scripts": {
-    "build": "browserify --plugin tinyify -s P2PGraph -e ./ > p2p-graph.min.js",
-    "size": "npm run build && cat p2p-graph.min.js | gzip | wc -c",
+    "example": "browserify -s P2PGraph . > example/p2p-graph.js && ecstatic example --port 4000",
+    "size": "browserify -s P2PGraph . | minify | gzip | wc -c",
     "test": "standard"
   }
 }
