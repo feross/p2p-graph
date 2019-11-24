@@ -134,6 +134,12 @@ P2PGraph.prototype.remove = function (id) {
     self.emit('select', false)
   }
 
+  for (var i = self._model.links.length - 1; i >= 0; i -= 1) {
+    if ((self._model.links[i].source.id === id) || (self._model.links[i].target.id === id)) {
+      self._model.links.splice(i, 1)
+    }
+  }
+
   self._model.nodes.splice(index, 1)
   self._update()
 }
