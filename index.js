@@ -1,12 +1,12 @@
 module.exports = P2PGraph
 
-var d3 = require('d3')
-var debug = require('debug')('p2p-graph')
-var EventEmitter = require('events')
-var inherits = require('inherits')
-var throttle = require('throttleit')
+const d3 = require('d3')
+const debug = require('debug')('p2p-graph')
+const EventEmitter = require('events')
+const inherits = require('inherits')
+const throttle = require('throttleit')
 
-var STYLE = {
+const STYLE = {
   links: {
     width: 0.7, // default link thickness
     maxWidth: 5.0, // max thickness
@@ -14,7 +14,7 @@ var STYLE = {
   }
 }
 
-var COLORS = {
+const COLORS = {
   links: {
     color: '#C8C8C8'
   },
@@ -37,7 +37,7 @@ var COLORS = {
 inherits(P2PGraph, EventEmitter)
 
 function P2PGraph (root) {
-  var self = this
+  const self = this
   if (!(self instanceof P2PGraph)) return new P2PGraph(root)
 
   EventEmitter.call(self)
@@ -52,8 +52,8 @@ function P2PGraph (root) {
   }
 
   self._model.links.forEach(function (link) {
-    var source = self._model.nodes[link.source]
-    var target = self._model.nodes[link.target]
+    const source = self._model.nodes[link.source]
+    const target = self._model.nodes[link.target]
 
     source.children = source.children || []
     source.children.push(link.target)
@@ -110,13 +110,13 @@ function P2PGraph (root) {
 }
 
 P2PGraph.prototype.list = function () {
-  var self = this
+  const self = this
   debug('list')
   return self._model.nodes
 }
 
 P2PGraph.prototype.add = function (node) {
-  var self = this
+  const self = this
   debug('add %s %o', node.id, node)
   if (self._getNode(node.id)) throw new Error('add: cannot add duplicate node')
   self._model.nodes.push(node)
@@ -124,9 +124,9 @@ P2PGraph.prototype.add = function (node) {
 }
 
 P2PGraph.prototype.remove = function (id) {
-  var self = this
+  const self = this
   debug('remove %s', id)
-  var index = self._getNodeIndex(id)
+  const index = self._getNodeIndex(id)
   if (index === -1) throw new Error('remove: node does not exist')
 
   if (self._model.focused && self._model.focused.id === id) {
@@ -139,12 +139,12 @@ P2PGraph.prototype.remove = function (id) {
 }
 
 P2PGraph.prototype.connect = function (sourceId, targetId) {
-  var self = this
+  const self = this
   debug('connect %s %s', sourceId, targetId)
 
-  var sourceNode = self._getNode(sourceId)
+  const sourceNode = self._getNode(sourceId)
   if (!sourceNode) throw new Error('connect: invalid source id')
-  var targetNode = self._getNode(targetId)
+  const targetNode = self._getNode(targetId)
   if (!targetNode) throw new Error('connect: invalid target id')
 
   if (self.getLink(sourceNode.index, targetNode.index)) {
@@ -159,15 +159,15 @@ P2PGraph.prototype.connect = function (sourceId, targetId) {
 }
 
 P2PGraph.prototype.disconnect = function (sourceId, targetId) {
-  var self = this
+  const self = this
   debug('disconnect %s %s', sourceId, targetId)
 
-  var sourceNode = self._getNode(sourceId)
+  const sourceNode = self._getNode(sourceId)
   if (!sourceNode) throw new Error('disconnect: invalid source id')
-  var targetNode = self._getNode(targetId)
+  const targetNode = self._getNode(targetId)
   if (!targetNode) throw new Error('disconnect: invalid target id')
 
-  var index = self.getLinkIndex(sourceNode.index, targetNode.index)
+  const index = self.getLinkIndex(sourceNode.index, targetNode.index)
   if (index === -1) throw new Error('disconnect: connection does not exist')
 
   self._model.links.splice(index, 1)
@@ -175,8 +175,8 @@ P2PGraph.prototype.disconnect = function (sourceId, targetId) {
 }
 
 P2PGraph.prototype.hasPeer = function () {
-  var self = this
-  var args = Array.prototype.slice.call(arguments, 0)
+  const self = this
+  const args = Array.prototype.slice.call(arguments, 0)
   debug('Checking for peers:', args)
   return args.every(function (nodeId) {
     return self._getNode(nodeId)
@@ -184,19 +184,19 @@ P2PGraph.prototype.hasPeer = function () {
 }
 
 P2PGraph.prototype.hasLink = function (sourceId, targetId) {
-  var self = this
-  var sourceNode = self._getNode(sourceId)
+  const self = this
+  const sourceNode = self._getNode(sourceId)
   if (!sourceNode) throw new Error('hasLink: invalid source id')
-  var targetNode = self._getNode(targetId)
+  const targetNode = self._getNode(targetId)
   if (!targetNode) throw new Error('hasLink: invalid target id')
   return !!self.getLink(sourceNode.index, targetNode.index)
 }
 
 P2PGraph.prototype.areConnected = function (sourceId, targetId) {
-  var self = this
-  var sourceNode = self._getNode(sourceId)
+  const self = this
+  const sourceNode = self._getNode(sourceId)
   if (!sourceNode) throw new Error('areConnected: invalid source id')
-  var targetNode = self._getNode(targetId)
+  const targetNode = self._getNode(targetId)
   if (!targetNode) throw new Error('areConnected: invalid target id')
   return self.getLink(sourceNode.index, targetNode.index) ||
     self.getLink(targetNode.index, sourceNode.index)
@@ -213,24 +213,24 @@ P2PGraph.prototype.choke = function (sourceId, targetId) {
 }
 
 P2PGraph.prototype.seed = function (id, isSeeding) {
-  var self = this
+  const self = this
   debug(id, 'isSeeding:', isSeeding)
   if (typeof isSeeding !== 'boolean') throw new Error('seed: 2nd param must be a boolean')
-  var index = self._getNodeIndex(id)
+  const index = self._getNodeIndex(id)
   if (index === -1) throw new Error('seed: node does not exist')
   self._model.nodes[index].seeder = isSeeding
   self._update()
 }
 
 P2PGraph.prototype.rate = function (sourceId, targetId, bytesRate) {
-  var self = this
+  const self = this
   debug('rate update:', sourceId + '<->' + targetId, 'at', bytesRate)
   if (typeof bytesRate !== 'number' || bytesRate < 0) throw new Error('rate: 3th param must be a positive number')
-  var sourceNode = self._getNode(sourceId)
+  const sourceNode = self._getNode(sourceId)
   if (!sourceNode) throw new Error('rate: invalid source id')
-  var targetNode = self._getNode(targetId)
+  const targetNode = self._getNode(targetId)
   if (!targetNode) throw new Error('rate: invalid target id')
-  var index = self.getLinkIndex(sourceNode.index, targetNode.index)
+  const index = self.getLinkIndex(sourceNode.index, targetNode.index)
   if (index === -1) throw new Error('rate: connection does not exist')
   self._model.links[index].rate = speedRange(bytesRate)
   debug('rate:', self._model.links[index].rate)
@@ -243,9 +243,9 @@ P2PGraph.prototype.rate = function (sourceId, targetId, bytesRate) {
 }
 
 P2PGraph.prototype.getLink = function (source, target) {
-  var self = this
-  for (var i = 0, len = self._model.links.length; i < len; i += 1) {
-    var link = self._model.links[i]
+  const self = this
+  for (let i = 0, len = self._model.links.length; i < len; i += 1) {
+    const link = self._model.links[i]
     if (link.source === self._model.nodes[source] &&
         link.target === self._model.nodes[target]) {
       return link
@@ -255,10 +255,26 @@ P2PGraph.prototype.getLink = function (source, target) {
 }
 
 P2PGraph.prototype.destroy = function () {
-  var self = this
+  const self = this
   debug('destroy')
 
-  self._root.remove()
+  const { _model } = self
+
+  if (_model.focused) {
+    _model.focused = null
+
+    self.emit('select', false)
+  }
+
+  _model.links = []
+  _model.nodes = []
+
+  d3.select(self._root).select('svg').remove()
+  self._svg = null
+
+  self._node = null
+  self._link = null
+
   window.removeEventListener('resize', self._resizeThrottled)
 
   self._root = null
@@ -266,7 +282,7 @@ P2PGraph.prototype.destroy = function () {
 }
 
 P2PGraph.prototype._update = function () {
-  var self = this
+  const self = this
 
   self._link = self._link.data(self._model.links)
   self._node = self._node.data(self._model.nodes, function (d) {
@@ -290,7 +306,7 @@ P2PGraph.prototype._update = function () {
       : STYLE.links.width
   })
 
-  var g = self._node.enter()
+  const g = self._node.enter()
     .append('g')
     .attr('class', 'node')
 
@@ -394,7 +410,7 @@ P2PGraph.prototype._update = function () {
 }
 
 P2PGraph.prototype._childNodes = function (d) {
-  var self = this
+  const self = this
   if (!d.children) return []
 
   return d.children
@@ -406,7 +422,7 @@ P2PGraph.prototype._childNodes = function (d) {
 }
 
 P2PGraph.prototype._parentNodes = function (d) {
-  var self = this
+  const self = this
   if (!d.parents) return []
 
   return d.parents
@@ -426,24 +442,24 @@ P2PGraph.prototype._connected = function (d, o) {
 }
 
 P2PGraph.prototype._getNode = function (id) {
-  var self = this
-  for (var i = 0, len = self._model.nodes.length; i < len; i += 1) {
-    var node = self._model.nodes[i]
+  const self = this
+  for (let i = 0, len = self._model.nodes.length; i < len; i += 1) {
+    const node = self._model.nodes[i]
     if (node.id === id) return node
   }
   return null
 }
 
 P2PGraph.prototype._scale = function () {
-  var self = this
-  var len = self._model.nodes.length
+  const self = this
+  const len = self._model.nodes.length
   return len < 10
     ? 1
     : Math.max(0.2, 1 - ((len - 10) / 100))
 }
 
 P2PGraph.prototype._resize = function (e) {
-  var self = this
+  const self = this
   self._width = self._root.offsetWidth
   self._height = window.innerWidth >= 900 ? 400 : 250
 
@@ -459,18 +475,18 @@ P2PGraph.prototype._resize = function (e) {
 }
 
 P2PGraph.prototype._getNodeIndex = function (id) {
-  var self = this
-  for (var i = 0, len = self._model.nodes.length; i < len; i += 1) {
-    var node = self._model.nodes[i]
+  const self = this
+  for (let i = 0, len = self._model.nodes.length; i < len; i += 1) {
+    const node = self._model.nodes[i]
     if (node.id === id) return i
   }
   return -1
 }
 
 P2PGraph.prototype.getLinkIndex = function (source, target) {
-  var self = this
-  for (var i = 0, len = self._model.links.length; i < len; i += 1) {
-    var link = self._model.links[i]
+  const self = this
+  for (let i = 0, len = self._model.links.length; i < len; i += 1) {
+    const link = self._model.links[i]
     if (link.source === self._model.nodes[source] &&
         link.target === self._model.nodes[target]) {
       return i
