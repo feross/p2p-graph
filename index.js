@@ -269,7 +269,11 @@ P2PGraph.prototype.destroy = function () {
   _model.links = []
   _model.nodes = []
 
-  self._update()
+  d3.select(self._root).select('svg').remove()
+  self._svg = null
+
+  self._node = null
+  self._link = null
 
   window.removeEventListener('resize', self._resizeThrottled)
 
