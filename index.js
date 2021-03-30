@@ -258,7 +258,19 @@ P2PGraph.prototype.destroy = function () {
   var self = this
   debug('destroy')
 
-  self._root.remove()
+  const {_model} = self
+
+  if (_model.focused) {
+    _model.focused = null
+
+    self.emit('select', false)
+  }
+
+  _model.links = []
+  _model.nodes = []
+
+  self._update()
+
   window.removeEventListener('resize', self._resizeThrottled)
 
   self._root = null
